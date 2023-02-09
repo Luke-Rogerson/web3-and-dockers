@@ -12,7 +12,22 @@ services:
     env_file: .env
     environment:
       NODE_PORT: 5000
-      INFURA_API_KEY: ${INFURA_API_KEY}
+      API_URL: "https://mainnet.infura.io/v3/${INFURA_API_KEY}"
     ports:
       - '5000:5000'
+    command: yarn dev
+  matic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ./src:/home/node/app/src
+      - ./nodemon.json:/home/node/app/nodemon.json
+    env_file: .env
+    environment:
+      NODE_PORT: 5001
+      API_URL: "https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}"
+    ports:
+      - '5001:5001'
     command: yarn dev

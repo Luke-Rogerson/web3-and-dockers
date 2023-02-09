@@ -8,11 +8,20 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.NODE_PORT;
 
-const web3 = new Web3(
-  `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`
-);
+const api_url = process.env.API_URL;
+console.log(`Using API URL ${api_url}`);
+
+const web3 = new Web3(process.env.API_URL!);
+
+const isPolygon = api_url!.includes("polygon");
 
 app.get("/GetData", async (_: Request, res: Response) => {
+  console.info(
+    isPolygon
+      ? "Contacting MATIC mainnet via INFURA"
+      : "Contacting ETH mainnet via alchemy"
+  );
+
   let latestBlockNumber: number | null = null;
 
   try {
